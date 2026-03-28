@@ -1,0 +1,7 @@
+metric,value,display,note
+mechanism_macro_f1,0.962218,0.962,Selected benchmark model on the audited mechanism dataset.
+best_crash_model,RandomForestRegressor,RandomForestRegressor,Lowest held-out test RMSE on the crash task.
+best_crash_rmse,0.862583,0.863,Held-out crash forecasting error.
+best_crash_r2,0.454379,0.454,Held-out crash forecasting fit.
+causal_avg_post_coef,-0.37865,-0.379,Average post-event coefficient for impaired fatality rate.
+causal_pretrend_p,0.095119,0.095,Pretrend diagnostic for the primary causal audit.
