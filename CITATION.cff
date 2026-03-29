@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use PRISM, please cite this software and link to the repository."
+title: "PRISM"
+version: "0.1.0"
+date-released: "2026-03-28"
+repository-code: "https://github.com/IshaanAyaan/prism-policy-ai"
+url: "https://github.com/IshaanAyaan/prism-policy-ai"
+authors:
+  - family-names: "Ayaan"
+    given-names: "Ishaan"
+abstract: >
+  PRISM is an open benchmark and reproducible analysis toolkit for
+  mechanism-aware policy text classification, causal audit, and crash-risk
+  forecasting across U.S. states.
+keywords:
+  - public policy
+  - causal inference
+  - nlp
+  - forecasting
+  - benchmark
+license: "NOASSERTION"
+

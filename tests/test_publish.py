@@ -9,6 +9,7 @@ def test_build_results_writes_expected_files(tmp_path):
 
     expected = {
         "pipeline_arch",
+        "social_preview",
         "mechanism_ladder",
         "event_study",
         "forecast_comparison",
@@ -22,4 +23,3 @@ def test_build_results_writes_expected_files(tmp_path):
     assert set(outputs) == expected
     for path in outputs.values():
         assert path.exists()
-

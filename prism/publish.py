@@ -160,6 +160,65 @@ def _save_scenario_deltas(path: Path) -> None:
     plt.close(fig)
 
 
+def _save_social_preview(path: Path) -> None:
+    metrics = headline_metrics()
+
+    fig, ax = plt.subplots(figsize=(12, 6.3))
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+    ax.axis("off")
+    fig.patch.set_facecolor("#f8fafc")
+    ax.set_facecolor("#f8fafc")
+
+    ax.text(0.05, 0.88, "PRISM", fontsize=30, weight="bold", color="#0f172a")
+    ax.text(
+        0.05,
+        0.80,
+        "Mechanism-aware policy text classification, causal audit, and crash-risk forecasting.",
+        fontsize=14,
+        color="#334155",
+    )
+
+    _box(ax, 0.05, 0.50, 0.25, 0.18, "Policy Text\nBenchmark", "#dbeafe", "#1d4ed8")
+    _box(ax, 0.38, 0.50, 0.25, 0.18, "Causal Audit\nEvent Study", "#dcfce7", "#15803d")
+    _box(ax, 0.71, 0.50, 0.24, 0.18, "Crash Forecast\nScenario Engine", "#fee2e2", "#b91c1c")
+    _arrow(ax, (0.30, 0.59), (0.38, 0.59))
+    _arrow(ax, (0.63, 0.59), (0.71, 0.59))
+
+    metric_specs = [
+        ("Macro-F1", f"{metrics.mechanism_macro_f1:.3f}", "#1d4ed8"),
+        ("Crash RMSE", f"{metrics.best_crash_rmse:.3f}", "#b91c1c"),
+        ("Avg Post Coef", f"{metrics.causal_avg_post_coef:.3f}", "#15803d"),
+    ]
+
+    xs = [0.05, 0.36, 0.67]
+    for (label, value, color), x in zip(metric_specs, xs, strict=False):
+        patch = FancyBboxPatch(
+            (x, 0.16),
+            0.26,
+            0.18,
+            boxstyle="round,pad=0.02,rounding_size=0.03",
+            linewidth=1.3,
+            edgecolor=color,
+            facecolor="#ffffff",
+        )
+        ax.add_patch(patch)
+        ax.text(x + 0.03, 0.27, label, fontsize=11, color="#475569")
+        ax.text(x + 0.03, 0.20, value, fontsize=24, weight="bold", color=color)
+
+    ax.text(
+        0.05,
+        0.08,
+        "Open benchmark and reproducible toolkit for public-policy AI.",
+        fontsize=11,
+        color="#334155",
+    )
+
+    fig.tight_layout()
+    fig.savefig(path, dpi=180, bbox_inches="tight")
+    plt.close(fig)
+
+
 def _headline_metrics_table() -> pd.DataFrame:
     metrics = headline_metrics()
     return pd.DataFrame(
@@ -210,6 +269,7 @@ def build_results(figures_dir: Path | None = None, tables_dir: Path | None = Non
 
     outputs = {
         "pipeline_arch": figures_dir / "pipeline_arch.png",
+        "social_preview": figures_dir / "social_preview.png",
         "mechanism_ladder": figures_dir / "mechanism_ladder.png",
         "event_study": figures_dir / "event_study_pub.png",
         "forecast_comparison": figures_dir / "forecast_comparison.png",
@@ -222,6 +282,7 @@ def build_results(figures_dir: Path | None = None, tables_dir: Path | None = Non
     }
 
     _save_pipeline_architecture(outputs["pipeline_arch"])
+    _save_social_preview(outputs["social_preview"])
     _save_mechanism_ladder(outputs["mechanism_ladder"])
     _save_event_study(outputs["event_study"])
     _save_forecast_comparison(outputs["forecast_comparison"])
@@ -234,4 +295,3 @@ def build_results(figures_dir: Path | None = None, tables_dir: Path | None = Non
     benchmark_source_balance().to_csv(outputs["mechanism_benchmark_sources"], index=False)
 
     return outputs
-

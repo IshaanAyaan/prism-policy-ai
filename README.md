@@ -1,26 +1,33 @@
 # PRISM
 
-PRISM is a mechanism-aware AI x social science project that studies how U.S. state alcohol policy language and policy structure relate to alcohol-impaired traffic fatality risk.
+PRISM is an open benchmark and reproducible analysis toolkit for mechanism-aware policy text classification, causal audit, and crash-risk forecasting across U.S. states.
 
-## Why It Matters
+[Methodology](docs/methodology.md) | [Results](docs/results.md) | [Quickstart Notebook](notebooks/quickstart_prism.ipynb) | [Data Notes](docs/data.md)
 
-Most policy studies flatten laws into binary indicators such as "changed" or "did not change." PRISM keeps the mechanism of the policy in view by separating three questions:
+![PRISM social preview](results/figures/social_preview.png)
 
-- What mechanism does the policy text represent: price, access, or enforcement?
-- What happened historically around a clean policy event?
-- What does next-year crash risk look like under a standardized scenario?
+## Why This Matters
 
-That separation is the core design choice in this repository. It keeps causal inference, text interpretation, and prediction from being conflated.
+- Most policy ML pipelines flatten laws into binary treatment flags; PRISM keeps the policy mechanism itself visible.
+- PRISM separates what a law says, what happened around a clean policy event, and what a forecasting model predicts next.
+- The repo is organized as a reusable public artifact, not a raw workspace dump: audited benchmark, curated state-year panel, public figures, and reproducible summaries.
+
+## Headline Metrics
+
+- Mechanism benchmark: `Macro-F1 = 0.962` on a 250-row audited benchmark.
+- Best crash forecaster: `RandomForestRegressor`, `RMSE = 0.863`, `R² = 0.454` on the held-out 2020-2023 test window.
+- Causal audit: average post-event coefficient `-0.379`, pretrend `p = 0.095`, framed as directional rather than definitive.
 
 ## Architecture
 
 ![PRISM architecture](results/figures/pipeline_arch.png)
 
-## Headline Findings
+## Reusable Components
 
-- Mechanism benchmark: `Macro-F1 = 0.962` on a 250-row audited benchmark, with the selected model outperforming larger pretrained baselines on this domain-specific task.
-- Best crash forecaster: `RandomForestRegressor`, `RMSE = 0.863`, `R² = 0.454` on the held-out 2020-2023 test window.
-- Causal audit: average post-event coefficient `-0.379` for alcohol-impaired fatality rate after first real-dollar beer-tax increases, with pretrend `p = 0.095`; the result is directional rather than definitive.
+- Audited policy-mechanism benchmark in `data/processed/mechanism_benchmark.csv`
+- Public benchmark comparison in `results/tables/mechanism_model_comparison.csv`
+- Curated crash-policy state-year panel in `data/processed/panel_state_year.parquet`
+- Figure-generation workflow via `make results`
 
 ## Selected Figures
 
@@ -47,6 +54,12 @@ make results
 make test
 ```
 
+Or open the notebook:
+
+```bash
+jupyter notebook notebooks/quickstart_prism.ipynb
+```
+
 Optional:
 
 ```bash
@@ -71,4 +84,3 @@ make demo
 - Teen-outcome work and raw-data ingestion are intentionally omitted from this public repo to keep the story focused; they remain part of the archived V2 workspace.
 
 This repository is a cleaned public extraction from a larger internal research workspace. The goal here is clarity, not completeness.
-
